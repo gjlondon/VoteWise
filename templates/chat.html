@@ -1,24 +1,33 @@
 <!-- Chat Container -->
 <style>
     .btn-mic {
-    background-color: #DCE4F0; /* Greyish blue color */
-    border: 1px solid dimgray; /* Thin black line */
-}
-
+        background-color: #DCE4F0;
+        /* Greyish blue color */
+        border: 1px solid dimgray;
+        /* Thin black line */
+    }
 </style>
 <div class="container align-items-center" style="border: 1px solid #eee; padding: 20px;">
-    <div class="box justify-content-center" >
-        <div id="avatar" style="margin-bottom: -100px; position: relative">
-            <div class="video-container">
+    <div class="box justify-content-center">
+        <div class="avatar-container">
+            <div class="video-container" id="current-avatar">
                 <video id="avatar-video" loop muted>
                     <source src="/static/avatar-2.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
             </div>
+            <div id="avatar-options">
+                <div class="video-container avatar-item">
+                    <video loop muted>
+                        <source src="/static/avatar.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <!-- Additional avatars can be added here -->
+            </div>
         </div>
         <!-- Upper section for chat messages -->
         <div class="upper mb-4 overflow-auto" id="upperid">
-        <!-- <div class="upper mb-4 overflow-auto" style="min-height: 40vh" id="upperid"> -->
+            <!-- <div class="upper mb-4 overflow-auto" style="min-height: 40vh" id="upperid"> -->
 
             <span class="d-block text-center text-muted">Type your message in the box below.</span>
             <!-- Messages will go here -->
@@ -31,12 +40,12 @@
                     required></textarea>
                 <div class="input-group-append">
 
-               <button type="button" class="btn btn-mic" id="micbtn">
-            <i class="bi bi-mic"></i>
-        </button>
-        <button type="submit" class="btn btn-primary" id="sendbtn">
-            <i class="bi bi-send"></i>
-        </button>
+                    <button type="button" class="btn btn-mic" id="micbtn">
+                        <i class="bi bi-mic"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="sendbtn">
+                        <i class="bi bi-send"></i>
+                    </button>
                 </div>
             </form>
 
@@ -111,7 +120,7 @@
 
         if (json.response) {
             video.play();
-            
+
             let message = json.message
             message = message.toString()
 
@@ -159,5 +168,58 @@
         scrollToBottom()
 
 
-    } 
+    }
+
+    /* 
+     * AVATAR SELECTION
+     */ 
+
+    // Function to toggle the display of additional avatars
+    function toggleAvatarOptions() {
+        const avatarOptions = document.getElementById('avatar-options');
+        avatarOptions.classList.toggle('expanded');
+    }
+
+    // Function to set and swap the selected avatar
+    function setSelectedAvatar(event) {
+        const previousAvatar = document.querySelector('.selected-avatar');
+        if (previousAvatar) {
+            previousAvatar.classList.remove('selected-avatar');
+        }
+
+        event.currentTarget.classList.add('selected-avatar');
+
+        // Swap the source with the main avatar
+        const newSrc = event.currentTarget.querySelector('source').getAttribute('src');
+        const currentVideo = document.getElementById('avatar-video');
+        const oldSrc = currentVideo.querySelector('source').getAttribute('src');
+        
+        // Set the new source for the main avatar and reload
+        currentVideo.querySelector('source').setAttribute('src', newSrc);
+        currentVideo.load();
+
+        // Set the old source for the clicked avatar
+        event.currentTarget.querySelector('source').setAttribute('src', oldSrc);
+        event.currentTarget.querySelector('video').load();
+
+        const avatarOptions = document.getElementById('avatar-options');
+        avatarOptions.classList.toggle('expanded');
+
+
+    }
+
+    // Event listeners
+    document.getElementById('current-avatar').addEventListener('click', toggleAvatarOptions);
+    document.querySelectorAll('.avatar-item').forEach(item => {
+        item.addEventListener('click', setSelectedAvatar);
+    });
+
+    // On DOM load, populate the 'avatar-options' div and set it to show class but not expanded
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const avatarOptions = document.getElementById('avatar-options');
+        avatarOptions.classList.add('show');
+    });
+
+
+
 </script>

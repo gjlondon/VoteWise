@@ -89,3 +89,39 @@
     overflow: hidden;
     transition: max-height 2s ease-out;
 }
+
+#avatar {
+    margin-bottom: -100px; 
+    position: relative;
+}
+
+.avatar-container {
+    display: flex;
+    align-items: center;
+}
+
+#avatar-options {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.5s ease-in-out;
+    padding-left: 10px;
+}
+
+#avatar-options.expanded {
+    width: 400px;  /* You can adjust this width based on your needs */
+}
+
+.video-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50px;
+    border: 1px solid #999;
+    box-shadow: 5px 5px 10px #ddd;
+}
+
+.video-container video {
+    width: 100px;
+    height: 120px;
+    object-fit: cover;
+}
