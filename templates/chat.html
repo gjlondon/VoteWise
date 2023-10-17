@@ -10,19 +10,26 @@
 <div class="container align-items-center" style="border: 1px solid #eee; padding: 20px;">
     <div class="box justify-content-center">
         <div class="avatar-container">
-            <div class="video-container" id="current-avatar">
-                <video id="avatar-video" loop muted>
-                    <source src="/static/avatar-2.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            <div id="avatar-options">
-                <div class="video-container avatar-item">
-                    <video loop muted>
-                        <source src="/static/avatar.mp4" type="video/mp4">
+            <div style="display: flex;">
+                <div class="video-container" id="current-avatar">
+                    <video id="avatar-video" loop muted>
+                        <source src="/static/avatar1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
                     </video>
                 </div>
-                <!-- Additional avatars can be added here -->
+                <div id="avatar-options">
+                    <div class="video-container avatar-item">
+                        <video loop muted>
+                            <source src="/static/avatar.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-container avatar-item">
+                        <video loop muted>
+                            <source src="/static/avatar2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <!-- Additional avatars can be added here -->
+                </div>
             </div>
         </div>
         <!-- Upper section for chat messages -->
