@@ -441,6 +441,8 @@ def chat(race_name, recommendation):
     voter_info = session.get('voter_info')
     race = unquote(race_name)
 
+    print(voter_info)
+
     # retrieve recommendation from session
     recommendation = session.get('recommendation')
 
@@ -461,6 +463,8 @@ def chat(race_name, recommendation):
 
     print(escaped_voter_info)
 
+    language = json.loads(voter_info).get('selected_language', LANGUAGE)
+
     prompt = f"""
                     You are a helpful voting assistant. You made the following recommendation:
                     {recommendation['name']}
@@ -472,6 +476,8 @@ def chat(race_name, recommendation):
                     
                     Here's info about the voter:
                     {escaped_voter_info}
+
+                    Always reply in {language}.
                 """
     prompt += """
 

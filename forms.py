@@ -15,6 +15,8 @@ class IntakeForm(FlaskForm):
                                                            Length(min=5, max=5), Regexp(r'^\d{5}$')])
     full_address = StringField('Full Address', validators=[DataRequired()])
 
+    selected_language = StringField('Language', validators=[DataRequired()])
+
     # voting preference information
     party_affiliation = SelectField('Party Affiliation', choices=[
         ('democrat', 'Democrat'),
