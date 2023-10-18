@@ -13,6 +13,7 @@ class IntakeForm(FlaskForm):
     state = SelectField('State', choices=[('', 'Select State')] + STATE_CHOICES, validators=[DataRequired()])
     address_zip_code = StringField('ZIP Code', validators=[DataRequired(),
                                                            Length(min=5, max=5), Regexp(r'^\d{5}$')])
+    full_address = StringField('Full Address', validators=[DataRequired()])
 
     # voting preference information
     party_affiliation = SelectField('Party Affiliation', choices=[
