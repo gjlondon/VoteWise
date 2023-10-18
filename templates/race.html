@@ -13,6 +13,9 @@
 <body>
 <div class="container">
     <header class="d-flex flex-wrap py-3 mb-4 border-bottom justify-content-between">
+        <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#left-column" aria-controls="left-column" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
             <img src="/static/logo.png" width="64"/>
             <span class="fs-4">VoteWise</span>
@@ -25,7 +28,7 @@
 <div class="container mt-5">
     <div class="row">
         <!-- Left Column: List of Races -->
-        <div class="col-md-4">
+        <div class="col-md-4 d-none d-md-block" id="left-column">
             <div class="d-flex justify-content-between align-items-center">
                 <h5>Races</h5>
                 <span>
@@ -115,6 +118,12 @@
 
 
      document.addEventListener('DOMContentLoaded', function() {
+        var toggleButton = document.querySelector('.navbar-toggler');
+        var leftColumn = document.getElementById('left-column');
+
+        toggleButton.addEventListener('click', function() {
+            leftColumn.classList.toggle('d-none');
+        });
         // Get the button elements by their IDs
         var learnMoreBtn = document.getElementById('learnMoreButton');
 
