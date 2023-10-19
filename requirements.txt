@@ -54,3 +54,8 @@ pandas
 wikipedia-api
 canonicaljson
 ipdb
+twilio
+fakeyou
+fastapi[all]
+twilio
+uvicorn

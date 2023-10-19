@@ -22,6 +22,7 @@ from forms import IntakeForm
 from models import VoterInfo
 from models import VoterInfoDecoder
 from prompts import OAKLAND_MAYOR_ISSUES, MAYOR_SCORING_PROMPT_TEMPLATE, MAYOR_OVERALL_RECOMMENDATION_PROMPT_TEMPLATE
+import sms
 
 env = Env()
 # Read .env into os.environ
@@ -56,6 +57,9 @@ def escaped_races():
 def chat2():
     return render_template('chat.html')
 
+@app.route('/landing')
+def landing():
+    return render_template('landing.html')
 
 @app.route('/skip-intake', methods=['GET'])
 def skip_intake(be_conservative=True):
@@ -141,11 +145,20 @@ def confirm():
     # get the index of this race from races    
 
 
-@app.route('/pdf', methods=['GET'])
+@app.route('/pdf', methods=['GET', 'POST'])
+@csrf.exempt
 def pdf():
+    if request.method == 'POST':
+        print(request.data)  # print raw data
+        print(request.form)  # print form data
+        phone_number = request.form.get('phone_number')
+        if phone_number:
+            # Call your desired Python function here
+            return jsonify(success=True)
+        else:
+            return jsonify(success=False, message="Phone number not provided"), 400
+
     choices = session.get('choices', {})
-    # sort races by whether session.get('choices') has a value for them
-    # if there is a value, put it in the front of the list, otherwise put it in the back of the list
     sorted_races = sorted(races(), key=lambda x: x not in choices)
     return render_template('pdf.html', races=sorted_races, choices=choices)
 
