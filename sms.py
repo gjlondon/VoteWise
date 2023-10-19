@@ -1,9 +1,7 @@
 import argparse
-import twilio_keys
 from twilio.rest import Client
 
-client = Client(username=twilio_keys.key, password=twilio_keys.secret, account_sid=twilio_keys.sid)
-# client = Client("AC757fe88ca4cbac1e813879ed1da0c2d9","8dd4e15b248ded5619aa977124d3f5dd")
+client = Client("AC757fe88ca4cbac1e813879ed1da0c2d9","8dd4e15b248ded5619aa977124d3f5dd")
 
 import re
 
