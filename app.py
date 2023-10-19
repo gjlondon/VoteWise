@@ -154,6 +154,7 @@ def pdf():
         phone_number = request.form.get('phone_number')
         if phone_number:
             # Call your desired Python function here
+            sms.send(phone_number, text="test from josh")
             return jsonify(success=True)
         else:
             return jsonify(success=False, message="Phone number not provided"), 400

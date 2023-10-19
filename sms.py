@@ -1,10 +1,20 @@
 import argparse
 from twilio.rest import Client
 
-client = Client("AC757fe88ca4cbac1e813879ed1da0c2d9","8dd4e15b248ded5619aa977124d3f5dd")
 
 import re
+from environs import Env
 
+env = Env()
+# Read .env into os.environ
+env.read_env()
+
+TWILIO_SID = env.str("TWILIO_SID")
+TWILIO_KEY = env.str("TWILIO_KEY")
+TWILIO_SECRET = env.str("TWILIO_SECRET")
+TWILIO_FROM_NUMBER = env.str("TWILIO_FROM_NUMBER")
+
+client = Client(username=TWILIO_KEY, password=TWILIO_SECRET, account_sid=TWILIO_SID)
 
 def normalize_number(us_number):
     # Remove all non-digits
@@ -24,7 +34,7 @@ def send(number, text, media=None):
     # Send an MMS
     message = client.messages.create(
         to=normalize_number(number),       # Replace with recipient phone number
-        from_=twilio_keys.from_number,  # Replace with your Twilio phone number
+        from_=TWILIO_FROM_NUMBER,  # Replace with your Twilio phone number
         body=text,
         media_url=media #"https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Arnold_Schwarzenegger_by_Gage_Skidmore_4.jpg/440px-Arnold_Schwarzenegger_by_Gage_Skidmore_4.jpg"  # Replace with the URL to your media
     )
