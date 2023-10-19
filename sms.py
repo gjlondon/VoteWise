@@ -1,9 +1,9 @@
 import argparse
-from twilio.rest import Client
-
-
+import json
 import re
+
 from environs import Env
+from twilio.rest import Client
 
 env = Env()
 # Read .env into os.environ
@@ -15,6 +15,73 @@ TWILIO_SECRET = env.str("TWILIO_SECRET")
 TWILIO_FROM_NUMBER = env.str("TWILIO_FROM_NUMBER")
 
 client = Client(username=TWILIO_KEY, password=TWILIO_SECRET, account_sid=TWILIO_SID)
+
+
+def save_to_json(number, user_values, initial_messages=[]):
+    """
+    Save user data and pending messages to a JSON file.
+
+    Args:
+    - number (int): The user's unique identifier.
+    - user_values (dict): Dictionary of user values.
+    - initial_messages (list): List of initial messages to send to the user.
+    """
+    data = {}
+    # Load existing data from the JSON file, if it exists.
+    try:
+        with open('sms-db.json', 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        pass
+
+    # Update the user's data and messages.
+    user_values["pending_messages"] = initial_messages
+    data[str(number)] = user_values
+
+    # Save the updated data back to the JSON file.
+    with open('sms-db.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+
+def process_messages(send_message_func):
+    """
+    Process outstanding messages for each user and update the JSON file.
+
+    Args:
+    - send_message_func (function): A function to send messages. It should accept two parameters:
+                                   1. user_data (dict): The user's data.
+                                   2. message (str): The message to send.
+    """
+    # Load data from the JSON file.
+    with open('sms-db.json', 'r') as f:
+        data = json.load(f)
+
+    for number, user_values in data.items():
+        sent_messages = user_values.get("sent_messages", [])
+        pending_messages = user_values.get("pending_messages", [])
+        # Process each pending message for the user.
+        for message in pending_messages[:]:
+            send_message_func(user_values, message)
+            sent_messages.append(message)
+            pending_messages.remove(message)
+
+        # Update the user's data with the processed messages.
+        user_values["sent_messages"] = sent_messages
+        user_values["pending_messages"] = pending_messages
+
+    # Save the updated data back to the JSON file.
+    with open('sms-db.json', 'w') as f:
+        json.dump(data, f, indent=4)
+
+
+# Example usage:
+def example_send_message(user_data, message):
+    print(f"Sending message to {user_data}: {message}")
+
+
+#process_messages(example_send_message)
+
+
 
 def normalize_number(us_number):
     # Remove all non-digits
