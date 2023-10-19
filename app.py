@@ -152,8 +152,9 @@ def pdf():
         if phone_number:
             # Call your desired Python function here, for example:
             # some_function(phone_number)
-            sms.send(phone_number, "test from votewise")
             return jsonify(success=True)
+        else:
+            return jsonify(success=False), 400
 
     choices = session.get('choices', {})
     sorted_races = sorted(races(), key=lambda x: x not in choices)
