@@ -146,6 +146,7 @@ def confirm():
 
 
 @app.route('/pdf', methods=['GET', 'POST'])
+@csrf.exempt
 def pdf():
     if request.method == 'POST':
         print(request.data)  # print raw data

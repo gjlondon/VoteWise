@@ -111,7 +111,7 @@
         document.getElementById('userinput').value = ""
         document.getElementById('userinput').placeholder = "Wait . . ."
 
-        const response = await fetch("/race/{{quote(current_race)}}/chat/vlad", {
+        const response = await fetch("/race/{{current_race | urlencode }}/chat/vlad", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
