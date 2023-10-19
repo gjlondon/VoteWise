@@ -148,13 +148,14 @@ def confirm():
 @app.route('/pdf', methods=['GET', 'POST'])
 def pdf():
     if request.method == 'POST':
+        print(request.data)  # print raw data
+        print(request.form)  # print form data
         phone_number = request.form.get('phone_number')
         if phone_number:
-            # Call your desired Python function here, for example:
-            # some_function(phone_number)
+            # Call your desired Python function here
             return jsonify(success=True)
         else:
-            return jsonify(success=False), 400
+            return jsonify(success=False, message="Phone number not provided"), 400
 
     choices = session.get('choices', {})
     sorted_races = sorted(races(), key=lambda x: x not in choices)

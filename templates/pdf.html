@@ -67,26 +67,29 @@
         // Show loading indicator
         $('body').css('cursor', 'progress');
 
-        $.ajax({
-            type: 'POST',
-            url: '/pdf',
-            data: { phone_number: phoneNumber },
-            success: function(response) {
-                // Hide loading indicator
-                $('body').css('cursor', 'default');
+$.ajax({
+    type: 'POST',
+    url: '/pdf',
+    data: { phone_number: phoneNumber },
+    success: function(response) {
+        // Hide loading indicator
+        $('body').css('cursor', 'default');
 
-                if (response.success) {
-                    $('#successModal').modal('show');
-                } else {
-                    $('#errorModal').modal('show');
-                }
-            },
-            error: function() {
-                // Hide loading indicator and show error modal
-                $('body').css('cursor', 'default');
-                $('#errorModal').modal('show');
-            }
-        });
+        if (response.success) {
+            $('#successModal').modal('show');
+        } else {
+            console.log("Server Response:", response.message);  // Log server response
+            $('#errorModal').modal('show');
+        }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        // Hide loading indicator and show error modal
+        $('body').css('cursor', 'default');
+        console.error("AJAX Error:", textStatus, errorThrown);  // Log AJAX error
+        $('#errorModal').modal('show');
+    }
+});
+
     }
 </script>
 
