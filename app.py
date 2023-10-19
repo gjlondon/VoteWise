@@ -56,6 +56,9 @@ def escaped_races():
 def chat2():
     return render_template('chat.html')
 
+@app.route('/landing')
+def chat2():
+    return render_template('landing.html')
 
 @app.route('/skip-intake', methods=['GET'])
 def skip_intake(be_conservative=True):
