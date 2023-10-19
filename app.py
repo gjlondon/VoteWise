@@ -22,6 +22,7 @@ from forms import IntakeForm
 from models import VoterInfo
 from models import VoterInfoDecoder
 from prompts import OAKLAND_MAYOR_ISSUES, MAYOR_SCORING_PROMPT_TEMPLATE, MAYOR_OVERALL_RECOMMENDATION_PROMPT_TEMPLATE
+import sms
 
 env = Env()
 # Read .env into os.environ
@@ -144,11 +145,17 @@ def confirm():
     # get the index of this race from races    
 
 
-@app.route('/pdf', methods=['GET'])
+@app.route('/pdf', methods=['GET', 'POST'])
 def pdf():
+    if request.method == 'POST':
+        phone_number = request.form.get('phone_number')
+        if phone_number:
+            # Call your desired Python function here, for example:
+            # some_function(phone_number)
+            sms.send(phone_number, "test from votewise")
+            return jsonify(success=True)
+
     choices = session.get('choices', {})
-    # sort races by whether session.get('choices') has a value for them
-    # if there is a value, put it in the front of the list, otherwise put it in the back of the list
     sorted_races = sorted(races(), key=lambda x: x not in choices)
     return render_template('pdf.html', races=sorted_races, choices=choices)
 
