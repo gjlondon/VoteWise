@@ -1,6 +1,8 @@
 import argparse
 import json
 import re
+import time
+import datetime
 
 from environs import Env
 from twilio.rest import Client
@@ -52,6 +54,8 @@ def process_messages(send_message_func):
                                    1. user_data (dict): The user's data.
                                    2. message (str): The message to send.
     """
+    print(f"Processing at {datetime.datetime.now()}")
+
     # Load data from the JSON file.
     with open('sms-db.json', 'r') as f:
         data = json.load(f)
@@ -79,10 +83,6 @@ def example_send_message(user_data, message):
     print(f"Sending message to {user_data}: {message}")
 
 
-#process_messages(example_send_message)
-
-
-
 def normalize_number(us_number):
     # Remove all non-digits
     digits_only = re.sub(r"[^\d]", "", us_number)
@@ -108,10 +108,9 @@ def send(number, text, media=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Send SMS message')
-    parser.add_argument('number', type=str, help='phone number to send SMS to')
-    parser.add_argument('text', type=str, help='text message to send')
-    parser.add_argument('media', type=str, help='media', default=None, nargs='?')
-
+    # Assuming you might want to parse some arguments here
     args = parser.parse_args()
 
-    send(args.number, args.text, args.media)
+    while True:  # This will create an infinite loop
+        process_messages(example_send_message)
+        time.sleep(1)  # This will pause the loop for 1 second
