@@ -119,7 +119,7 @@ def index():
         print("in form")
         return redirect(url_for('race'))
         return jsonify(form_data)
-    return render_template('intake_form.html', form=form)
+    return render_template('intake_form.html', form=form, google_api_key = env.str('GOOGLE_MAPS_API_KEY'))
 
 
 # read the race and candidate parameters from the request, save them as kv into the session variable, and redirect to the next race
@@ -429,7 +429,7 @@ def race_recommendation(race_name):
     session['recommendation'] = recommended_candidate_data
     session.modified = True
 
-    time.sleep(4)
+    # time.sleep(4)
     return jsonify({"response": True, "message": recommended_candidate_data})
 
 
@@ -479,7 +479,7 @@ def chat(race_name, recommendation):
 
                     Always reply in {language}.
 
-                    When mentioning a candidate, surround them with **asterisks**. E.g. **Jane Smith**.
+                    When mentioning a candidate by name, surround them with ** asterisks. E.g. **Jane Smith**.
                 """
     prompt += """
 

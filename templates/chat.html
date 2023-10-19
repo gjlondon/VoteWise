@@ -6,6 +6,10 @@
         border: 1px solid dimgray;
         /* Thin black line */
     }
+
+    span.candidate {
+        color: blue;
+    }
 </style>
 <div class="container align-items-center" style="border: 1px solid #eee; padding: 20px;">
     <div class="box justify-content-center">
@@ -131,7 +135,6 @@
                 var regex = /\*\*(.*?)\*\*/g;
                 // Replace the text within double asterisks with a span element having class 'candidate'
                 var formattedMessage = message.replace(regex, '<span class="candidate">$1</span>');
-                console.log(`Formatted message: ${formattedMessage} and message: ${message}`)
                 return formattedMessage;
             }
 
@@ -152,12 +155,17 @@
             function displayNextLetter() {
                 scrollToBottom()
                 if (index < message.length) {
-                    temp.innerHTML = temp.innerHTML + message[index];
-                    index++;
-                    setTimeout(displayNextLetter, 15);
+                    if (message[index] == '*') {
+                        index++;
+                        setTimeout(displayNextLetter, 15);
+                    } else {
+                        temp.innerHTML = temp.innerHTML + message[index];
+                        index++;
+                        setTimeout(displayNextLetter, 15);
+                    }
                 } else {
                     var formattedMessage = formatMessage(message);
-                    temp.innerHtml = formattedMessage;
+                    temp.innerHTML = formattedMessage;
                     temp.removeAttribute('id')
                     sendbtn.disabled = false
                     userinputarea.disabled = false
