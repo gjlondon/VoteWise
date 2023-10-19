@@ -6,6 +6,10 @@
         border: 1px solid dimgray;
         /* Thin black line */
     }
+
+    span.candidate {
+        color: blue;
+    }
 </style>
 <div class="container align-items-center" style="border: 1px solid #eee; padding: 20px;">
     <div class="box justify-content-center">
@@ -126,6 +130,14 @@
 
 
         if (json.response) {
+            function formatMessage(message) {
+                // Regular expression to find text within double asterisks
+                var regex = /\*\*(.*?)\*\*/g;
+                // Replace the text within double asterisks with a span element having class 'candidate'
+                var formattedMessage = message.replace(regex, '<span class="candidate">$1</span>');
+                return formattedMessage;
+            }
+
             video.play();
 
             let message = json.message
@@ -143,10 +155,17 @@
             function displayNextLetter() {
                 scrollToBottom()
                 if (index < message.length) {
-                    temp.innerHTML = temp.innerHTML + message[index];
-                    index++;
-                    setTimeout(displayNextLetter, 15);
+                    if (message[index] == '*') {
+                        index++;
+                        setTimeout(displayNextLetter, 15);
+                    } else {
+                        temp.innerHTML = temp.innerHTML + message[index];
+                        index++;
+                        setTimeout(displayNextLetter, 15);
+                    }
                 } else {
+                    var formattedMessage = formatMessage(message);
+                    temp.innerHTML = formattedMessage;
                     temp.removeAttribute('id')
                     sendbtn.disabled = false
                     userinputarea.disabled = false
@@ -159,6 +178,7 @@
         }
         else {
             let message = json.message
+  
             upperdiv.innerHTML = upperdiv.innerHTML +
                 `<div class="message">
             <div class="appmessagediv">
