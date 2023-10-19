@@ -126,6 +126,15 @@
 
 
         if (json.response) {
+            function formatMessage(message) {
+                // Regular expression to find text within double asterisks
+                var regex = /\*\*(.*?)\*\*/g;
+                // Replace the text within double asterisks with a span element having class 'candidate'
+                var formattedMessage = message.replace(regex, '<span class="candidate">$1</span>');
+                console.log(`Formatted message: ${formattedMessage} and message: ${message}`)
+                return formattedMessage;
+            }
+
             video.play();
 
             let message = json.message
@@ -147,6 +156,8 @@
                     index++;
                     setTimeout(displayNextLetter, 15);
                 } else {
+                    var formattedMessage = formatMessage(message);
+                    temp.innerHtml = formattedMessage;
                     temp.removeAttribute('id')
                     sendbtn.disabled = false
                     userinputarea.disabled = false
@@ -159,6 +170,7 @@
         }
         else {
             let message = json.message
+  
             upperdiv.innerHTML = upperdiv.innerHTML +
                 `<div class="message">
             <div class="appmessagediv">

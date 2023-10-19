@@ -478,6 +478,8 @@ def chat(race_name, recommendation):
                     {escaped_voter_info}
 
                     Always reply in {language}.
+
+                    When mentioning a candidate, surround them with **asterisks**. E.g. **Jane Smith**.
                 """
     prompt += """
 
