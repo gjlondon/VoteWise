@@ -130,12 +130,58 @@
 
 
         if (json.response) {
-            function formatMessage(message) {
-                // Regular expression to find text within double asterisks
-                var regex = /\*\*(.*?)\*\*/g;
-                // Replace the text within double asterisks with a span element having class 'candidate'
-                var formattedMessage = message.replace(regex, '<span class="candidate">$1</span>');
-                return formattedMessage;
+            function generateCards(textBlock) {
+                // Regular expression to find text within ** **
+                const regex = /\*\*([^*]+)\*\*/g;
+                let match;
+
+                // Find the last div with class "rcc" in the DOM
+                const rccDivs = document.querySelectorAll('.rcc');
+                let lastRccDiv;
+                if (rccDivs.length > 0) {
+                    lastRccDiv = rccDivs[rccDivs.length - 1];
+                } else {
+                    console.error('No div with class "rcc" found');
+                    return;
+                }
+
+                // Iterate through all matches of text within ** **
+                while ((match = regex.exec(textBlock)) !== null) {
+                    const name = match[1];  // Extract name from match
+
+                    // Create new div element with class "card rcc"
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = 'card rcc';
+
+                    // Set innerHTML of new div
+                    cardDiv.innerHTML = `
+                        <div class="card-body" id="recommendation">
+                            <div id="recommendationInfo" style="display: block;">
+                                <h2 class="card-title" style="background-color: #f5f5f5; padding: 10px; border-radius: 8px; text-align: center;">Recommendation: ${name} </h2>
+                                <p class="card-text">
+                                    Based on our discussion
+                                </p>
+                                <!-- Buttons -->
+                                <div class="mt-3 text-right">
+                                    <form action="/confirm" method="get">
+                                        <!-- Hidden input to store the recommended candidate's name -->
+                                        <div class="d-flex justify-content-between">
+                                            <!-- Group the remaining buttons to the right -->
+                                            <div>
+                                                <button type="button" class="btn btn-secondary mr-2" id="learnMoreButton">Learn More</button>
+                                                <button type="submit" class="btn btn-success">Accept</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Insert new div after the last div with class "rcc"
+                    lastRccDiv.parentNode.insertBefore(cardDiv, lastRccDiv.nextSibling);
+                    lastRccDiv = cardDiv;  // Update lastRccDiv to point to the newly created div
+                }
             }
 
             video.play();
@@ -164,8 +210,8 @@
                         setTimeout(displayNextLetter, 15);
                     }
                 } else {
-                    var formattedMessage = formatMessage(message);
-                    temp.innerHTML = formattedMessage;
+                    generateCards(message);
+                    temp.innerHTML = message;
                     temp.removeAttribute('id')
                     sendbtn.disabled = false
                     userinputarea.disabled = false
