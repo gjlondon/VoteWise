@@ -52,6 +52,30 @@ def races():
 def escaped_races():
     return [quote(item) for item in races()]
 
+def save_voter_info(voter_info_json):
+    print('saving voter info')
+    json_string = json.dumps(voter_info_json)
+    md5_hash = hashlib.md5(json_string.encode()).hexdigest()
+    
+    voter_info_dir = Path(f"./data/voter_infos")
+    if not voter_info_dir.exists():
+        # create voter_info_dir
+        voter_info_dir.mkdir(parents=True, exist_ok=True)
+    
+    voter_info_path = voter_info_dir / f"{md5_hash[0:10]}.json"
+    if not voter_info_path.exists():
+        with open(voter_info_path, 'w') as f:
+            json.dump(voter_info_json, f)
+    print('saved voter info')
+
+def load_voter_info():
+    vote_info = 'generic.json'
+    voter_info_dir = Path(f"./data/voter_infos")
+    voter_info_path = voter_info_dir / f"{vote_info}"
+    with open(voter_info_path, 'r') as f:
+        voter_info_json = json.load(f)
+    return voter_info_json
+
 
 @app.route('/chat2')
 def chat2():
@@ -419,6 +443,15 @@ def race_recommendation(race_name):
     race_description = ballot_descriptions[
         decoded_race_name] if decoded_race_name in ballot_descriptions else "This race is full of intrigue and mystery. We don't know much about it yet."
     voter_info_json = session.get('voter_info')
+
+    # read the demo field from env
+    demo = env.bool("DEMO", False)
+    if demo:
+        print('Demo Mode; loading generic voter info')
+        voter_info_json = load_voter_info()
+    else:
+        save_voter_info(voter_info_json)
+
     voter_info_hash = hash_json_object(voter_info_json)
 
     voter_info = VoterInfoDecoder().decode(voter_info_json)
