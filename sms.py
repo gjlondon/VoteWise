@@ -19,7 +19,7 @@ TWILIO_FROM_NUMBER = env.str("TWILIO_FROM_NUMBER")
 client = Client(username=TWILIO_KEY, password=TWILIO_SECRET, account_sid=TWILIO_SID)
 
 
-def save_to_json(number, user_values, initial_messages=[]):
+def save_to_json(number, user_values, initial_messages=None):
     """
     Save user data and pending messages to a JSON file.
 
@@ -28,6 +28,8 @@ def save_to_json(number, user_values, initial_messages=[]):
     - user_values (dict): Dictionary of user values.
     - initial_messages (list): List of initial messages to send to the user.
     """
+    if initial_messages is None:
+        initial_messages = []
     data = {}
     # Load existing data from the JSON file, if it exists.
     try:

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SelectMultipleField, widgets, SubmitField
+from wtforms import StringField, SelectField, SelectMultipleField, widgets, SubmitField, RadioField
 from wtforms.validators import DataRequired, Length, Regexp
 
 from constants import STATE_CHOICES, QUESTION_TEXT, LIKERT_CHOICES
@@ -40,7 +40,7 @@ class IntakeForm(FlaskForm):
     # Dynamically create the Likert scale fields
     # Changed to select buttons over radio buttons
     for likert_choice in VoterInfo.likert_choices:
-        vars()[likert_choice] = SelectField(
+        vars()[likert_choice] = RadioField(
             QUESTION_TEXT[likert_choice],
             choices=LIKERT_CHOICES,
             validators=[DataRequired()]
