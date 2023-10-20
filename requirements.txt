@@ -59,3 +59,4 @@ fakeyou
 fastapi[all]
 twilio
 uvicorn
+pydub
