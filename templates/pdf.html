@@ -33,7 +33,22 @@
 
 <!-- Modals -->
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-    <!-- ... modal content ... -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Subscribed!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Message sent thanks. Respond with STOP to unsubscribe.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
@@ -64,34 +79,48 @@
     function submitPhone() {
         var phoneNumber = $('#phoneNumber').val();
 
-        // Show loading indicator
-        $('body').css('cursor', 'progress');
 
-$.ajax({
-    type: 'POST',
-    url: '/pdf',
-    data: { phone_number: phoneNumber },
-    success: function(response) {
-        // Hide loading indicator
-        $('body').css('cursor', 'default');
+        $.ajax({
+            type: 'POST',
+            url: '/pdf',
+            data: { phone_number: phoneNumber },
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response) {
+                if (response.success) {
+                    $('#successModal').modal('show');
+                } else {
+                    $('#errorModal').modal('show');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#errorModal').modal('show');
 
-        if (response.success) {
-            $('#successModal').modal('show');
-        } else {
-            console.log("Server Response:", response.message);  // Log server response
-            $('#errorModal').modal('show');
-        }
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-        // Hide loading indicator and show error modal
-        $('body').css('cursor', 'default');
-        console.error("AJAX Error:", textStatus, errorThrown);  // Log AJAX error
-        $('#errorModal').modal('show');
+            },
+            complete: function() {
+                // Hide loading indicator
+                $('body').css('cursor', 'default');
+
+            }
+        });
     }
-});
 
-    }
+
 </script>
+
+<script>
+    document.getElementById('savePDF').addEventListener('click', function(){
+        var opt = {
+            margin: 10,
+            filename: 'choices.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(document.body).save();
+    });
+</script>
+
 
 </body>
 </html>

@@ -118,6 +118,16 @@ fieldset {
     background-color: #333; /* Dark gray */
     color: #fff; /* White text */
 }
+
+
+/* Hide the actual radio buttons */
+.btn-group input[type="radio"] {
+  display: none;
+}
+
+
+
+
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?key={{google_api_key}}&libraries=places"></script>
 
@@ -167,17 +177,22 @@ fieldset {
         <!-- Likert Scale Questions -->
         {% set likert_questions = ['housing', 'economy', 'environment', 'immigration', 'income_inequality',
         'transportation', 'education', 'healthcare', 'public_safety', 'taxation'] %}
+
         {% for question in likert_questions %}
-            <fieldset class="form-group" {% if loop.index > 4 %}style="display: none;"{% endif %}>
-                <legend>{{ form[question].label }}</legend>
-                <div class="form-check form-check-inline">
-                    {% for subfield in form[question] %}
-                    <label class="likert-label">
-                        {{ subfield }}
-                    </label>
-                    {% endfor %}
-                </div>
-            </fieldset>
+            <div class="btn-group" data-toggle="buttons">
+                <fieldset class="form-group" {% if loop.index > 4 %}style="display: none;"{% endif %}>
+                    <legend>{{ form[question].label.text }}</legend>
+
+                    <div class="form-check form-check-inline">
+                        {% for subfield in form[question] %}
+                            <label class="likert-label btn btn-primary">
+                                {{ subfield.label.text }}
+                                {{ subfield() }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
         {% endfor %}
         <p>We will ask more questions as the guide requires more information...</p>
         <br>

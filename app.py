@@ -153,7 +153,10 @@ def pdf():
         print(request.form)  # print form data
         phone_number = request.form.get('phone_number')
         if phone_number:
+            phone_number = sms.normalize_number(phone_number)
             # Call your desired Python function here
+            sms.send(phone_number, text="test from josh")
+            sms.save_to_json(phone_number, session, ["REMIND"])
             return jsonify(success=True)
         else:
             return jsonify(success=False, message="Phone number not provided"), 400
