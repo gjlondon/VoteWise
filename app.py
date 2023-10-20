@@ -157,6 +157,7 @@ def index():
         form.state.data = 'CA'
         form.address_zip_code.data = '94605'
         form.full_address.data = '9777 Golf Links Rd, Oakland, CA 94605'
+        form.political_issues.data = ['education', 'economy']
 
     return render_template('intake_form.html', form=form, google_api_key = env.str('GOOGLE_MAPS_API_KEY'))
 

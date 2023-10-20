@@ -231,7 +231,7 @@ fieldset {
 
         {% for question in likert_questions %}
             <div class="btn-group" data-toggle="buttons">
-                <fieldset class="form-group" {% if loop.index > 4 %}style="display: none;"{% endif %}>
+                <fieldset class="form-group" {% if loop.index > 7 %}style="display: none;"{% endif %}>
                     <legend>{{ form[question].label.text }}</legend>
 
                     <div class="form-check form-check-inline">
