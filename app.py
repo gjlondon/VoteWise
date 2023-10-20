@@ -450,6 +450,7 @@ def race_recommendation(race_name):
     if demo:
         print('Demo Mode; loading generic voter info')
         voter_info_json = load_voter_info()
+        time.sleep(3)
     else:
         save_voter_info(voter_info_json)
 
