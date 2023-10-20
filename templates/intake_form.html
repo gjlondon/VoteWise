@@ -126,6 +126,33 @@ fieldset {
 }
 
 
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.checkmark {
+    display: none;
+    color: green;
+    font-size: 24px;
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 
 
     </style>
@@ -156,7 +183,16 @@ fieldset {
 
         <div class="form-group">
             {{ form.full_address.label(class="form-label") }}
-            {{ form.full_address(id="full_address", class="form-control") }}
+            <div class="flex-container">
+                
+                {{ form.full_address(id="full_address", class="form-control") }}
+                
+                <div id="status" class="status" style="width: 20px; margin-left: 15px">
+                    <div class="spinner"></div>
+                    <div class="checkmark">&#10003;</div>
+                </div>
+            </div>
+            
         </div>
 
         <div class="form-group" style="display: none">
@@ -305,7 +341,7 @@ fieldset {
             function initAutocomplete() {
                 var input = document.getElementById('full_address');
                 var autocomplete = new google.maps.places.Autocomplete(input, {
-                    componentRestrictions: {country: 'US'},
+                    Restrictions: {country: 'US'},
                     types: ['address']  // Optional: restricts the results to address entries only
                 });
 
@@ -346,10 +382,24 @@ fieldset {
                     document.getElementById('city').value = city;
                     document.getElementById('state').value = state;
                     document.getElementById('address_zip_code').value = zip_code;
+
+                    document.querySelector('.checkmark').style.display = 'none';
+                    document.querySelector('.spinner').style.display = 'block';
+
+                    // Hide spinner and show checkmark and message after 1 second
+                    setTimeout(function() {
+                        document.querySelector('.spinner').style.display = 'none';
+                        document.querySelector('.checkmark').style.display = 'block';
+                    }, 500);
                 });
             }
 
             google.maps.event.addDomListener(window, 'load', initAutocomplete);
+
+            // Assuming you have already initialized the Google Places Autocomplete
+            let autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('full_address')
+            );
 
         </script>
     </body>
