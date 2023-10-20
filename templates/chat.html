@@ -122,7 +122,6 @@
             },
             body: JSON.stringify({ data: userinput })
 
-
         });
         let json = await response.json();
 
@@ -130,14 +129,6 @@
 
 
         if (json.response) {
-            function formatMessage(message) {
-                // Regular expression to find text within double asterisks
-                var regex = /\*\*(.*?)\*\*/g;
-                // Replace the text within double asterisks with a span element having class 'candidate'
-                var formattedMessage = message.replace(regex, '<span class="candidate">$1</span>');
-                return formattedMessage;
-            }
-
             video.play();
 
             let message = json.message
@@ -164,8 +155,7 @@
                         setTimeout(displayNextLetter, 15);
                     }
                 } else {
-                    var formattedMessage = formatMessage(message);
-                    temp.innerHTML = formattedMessage;
+                    temp.innerHTML = message;
                     temp.removeAttribute('id')
                     sendbtn.disabled = false
                     userinputarea.disabled = false
