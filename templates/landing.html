@@ -7,40 +7,126 @@
     <title>VoteWise - AI Powered Voting Recommendations</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&family=Source+Sans+3:wght@300;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        .hero-section {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/static/flag.png');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-        }
+      .hero-section {
+        height: 100vh;
+        background-image: url('static/flagbanner.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: #333;
+        text-align: left;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    body {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    background-color: #eef2f7;
+    margin: 0;
+    padding: 0;
+    }
+
+    h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #333;
+    }
+    
+    h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+    }
+
+    .lead {
+    font-size: 2rem;
+    font-weight: 500;    
+    }
+
+    .btn-primary {
+    background-color: #9ec5fe; /* primary blue */
+    border-width: 3px;
+    border-color: #000;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #000;
+    transition: background-color 0.3s, box-shadow 0.3s transform 0.3s;
+    font-weight:600;
+    color: #000;
+    text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+    border-color: #000;
+    box-shadow: 0 0 0;
+    transform: translateY(3px);
+    }
+
+    strong{
+    font-size: 1.25rem;
+    text-decoration: underline;
+    font-weight: 600;
+    color: #000;
+    }
+
+    a{
+    text-decoration: none;
+    color: inherit;
+    }
+
+    html{
+    scroll-behavior: smooth;
+    }
+
+    .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    section {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    }
+    
     </style>
 </head>
 <body>
 
 <!-- Hero Section -->
-<section class="hero-section text-center">
+<section class="hero-section">
     <div class="container">
         <h1>Welcome to VoteWise</h1>
-        <p class="lead">Empower your vote with AI-powered recommendations.</p>
-        <a href="#learn-more" class="btn btn-primary btn-lg">Learn More</a>
+        <p class="lead">Your AI powered personalized voting guide that understands who you are and helps you shape the world you want to live in.</p>
+        <br>
+        <button class="btn-primary btn-lg" style="margin-right: 2rem">Help me vote</button>
+        <a href="#learn-more"><strong>Learn more</strong></a>
     </div>
 </section>
 
 <!-- About Section -->
-<section id="learn-more" class="py-5">
+<section id="learn-more" class="py-5" style="height:50vh">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <h2>About VoteWise</h2>
-                <p>VoteWise is an innovative AI agent designed to guide citizens in their voting decisions. Using advanced algorithms and real-time data analysis, we provide insights and recommendations tailored to your beliefs, values, and priorities.</p>
+                <p>Your AI powered voting guide that makes personalized recommendations on who to vote for with detailed justifications for our selections based on a deep understanding of the candidates, the issues, and most importantly, a deep understanding of you.</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 center-content">
                 <!-- You can add an image or illustration here related to your platform -->
                 <img src="/static/logo.png" alt="VoteWise illustration" class="img-fluid">
             </div>
@@ -49,23 +135,22 @@
 </section>
 
 <!-- Features Section -->
-<section class="bg-light py-5">
+<section class="bg-light py-5" style="height:50vh">
     <div class="container">
-        <h2 class="text-center">Features</h2>
         <div class="row">
             <div class="col-md-4 text-center">
                 <i class="fas fa-brain fa-3x"></i>
-                <h4>Intelligent Analysis</h4>
-                <p>Our AI system analyzes multiple factors to give you the most accurate recommendations.</p>
+                <h2>Intelligent Analysis</h2>
+                <p>Our innovative AI system does deep analysis of the candidates, the issues, and the voters to provide the most accurate recommendations.</p>
             </div>
             <div class="col-md-4 text-center">
                 <i class="fas fa-user-check fa-3x"></i>
-                <h4>Personalized Insights</h4>
+                <h2>Personalized Insights</h2>
                 <p>Get insights that are tailored specifically to you, ensuring that your vote aligns with your values.</p>
             </div>
             <div class="col-md-4 text-center">
                 <i class="fas fa-shield-alt fa-3x"></i>
-                <h4>Secure & Private</h4>
+                <h2>Secure & Private</h2>
                 <p>Your data is safe with us. We prioritize your privacy and never share your information.</p>
             </div>
         </div>
