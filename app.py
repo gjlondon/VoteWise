@@ -110,7 +110,7 @@ def skip_intake(be_conservative=True):
 def home():
     return render_template('landing.html')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/intake', methods=['GET', 'POST'])
 def index():
     form = IntakeForm()
     if form.validate_on_submit():
