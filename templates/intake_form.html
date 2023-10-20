@@ -134,6 +134,21 @@ fieldset {
 </head>
 <body>
 <div class="container mt-5">
+
+{% if form.errors %}
+<div class="errors-box">
+    <strong>There were errors in your submission:</strong>
+    <ul>
+        {% for field_name, errors in form.errors.items() %}
+            {% for error in errors %}
+                <li>{{ form[field_name].label.text }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+
     <h1>Let's get Started!</h1>
     <h2>1. Locate your Ballot </h2>
     <form action="" method="post" novalidate>
@@ -186,8 +201,15 @@ fieldset {
                     <div class="form-check form-check-inline">
                         {% for subfield in form[question] %}
                             <label class="likert-label btn btn-primary">
+
+                            {% if loop.index == loop.length %}
+                                {{ subfield.label.text }}
+                                {{ subfield(checked=True) }}
+                            {% else %}
                                 {{ subfield.label.text }}
                                 {{ subfield() }}
+                            {% endif %}
+
                             </label>
                         {% endfor %}
                     </div>
