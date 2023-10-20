@@ -105,6 +105,9 @@ def skip_intake(be_conservative=True):
     # response.mimetype = 'application/json'
     # return response
 
+@app.route('/')
+def home():
+    return render_template('landing.html')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
