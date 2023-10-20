@@ -22,6 +22,7 @@ from forms import IntakeForm
 from models import VoterInfo
 from models import VoterInfoDecoder
 from prompts import OAKLAND_MAYOR_ISSUES, MAYOR_SCORING_PROMPT_TEMPLATE, MAYOR_OVERALL_RECOMMENDATION_PROMPT_TEMPLATE
+import sms
 
 env = Env()
 # Read .env into os.environ
@@ -125,7 +126,7 @@ def index():
         print("in form")
         return redirect(url_for('race'))
         return jsonify(form_data)
-    return render_template('intake_form.html', form=form)
+    return render_template('intake_form.html', form=form, google_api_key = env.str('GOOGLE_MAPS_API_KEY'))
 
 
 # read the race and candidate parameters from the request, save them as kv into the session variable, and redirect to the next race
@@ -147,11 +148,23 @@ def confirm():
     # get the index of this race from races    
 
 
-@app.route('/pdf', methods=['GET'])
+@app.route('/pdf', methods=['GET', 'POST'])
+@csrf.exempt
 def pdf():
+    if request.method == 'POST':
+        print(request.data)  # print raw data
+        print(request.form)  # print form data
+        phone_number = request.form.get('phone_number')
+        if phone_number:
+            phone_number = sms.normalize_number(phone_number)
+            # Call your desired Python function here
+            sms.send(phone_number, text="test from josh")
+            sms.save_to_json(phone_number, session, ["REMIND"])
+            return jsonify(success=True)
+        else:
+            return jsonify(success=False, message="Phone number not provided"), 400
+
     choices = session.get('choices', {})
-    # sort races by whether session.get('choices') has a value for them
-    # if there is a value, put it in the front of the list, otherwise put it in the back of the list
     sorted_races = sorted(races(), key=lambda x: x not in choices)
     return render_template('pdf.html', races=sorted_races, choices=choices)
 
@@ -435,7 +448,7 @@ def race_recommendation(race_name):
     session['recommendation'] = recommended_candidate_data
     session.modified = True
 
-    time.sleep(4)
+    # time.sleep(4)
     return jsonify({"response": True, "message": recommended_candidate_data})
 
 
@@ -446,6 +459,8 @@ def chat(race_name, recommendation):
     text = data.get('data')
     voter_info = session.get('voter_info')
     race = unquote(race_name)
+
+    print(voter_info)
 
     # retrieve recommendation from session
     recommendation = session.get('recommendation')
@@ -467,6 +482,8 @@ def chat(race_name, recommendation):
 
     print(escaped_voter_info)
 
+    language = json.loads(voter_info).get('selected_language', LANGUAGE)
+
     prompt = f"""
                     You are a helpful voting assistant. You made the following recommendation:
                     {recommendation['name']}
@@ -478,6 +495,10 @@ def chat(race_name, recommendation):
                     
                     Here's info about the voter:
                     {escaped_voter_info}
+
+                    Always reply in {language}.
+
+                    When mentioning a candidate by name, surround them with ** asterisks. E.g. **Jane Smith**.
                 """
     prompt += """
 

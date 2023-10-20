@@ -118,38 +118,60 @@ fieldset {
     background-color: #333; /* Dark gray */
     color: #fff; /* White text */
 }
+
+
+/* Hide the actual radio buttons */
+.btn-group input[type="radio"] {
+  display: none;
+}
+
+
+
+
     </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{google_api_key}}&libraries=places"></script>
+
 </head>
 <body>
 <div class="container mt-5">
+
+{% if form.errors %}
+<div class="errors-box">
+    <strong>There were errors in your submission:</strong>
+    <ul>
+        {% for field_name, errors in form.errors.items() %}
+            {% for error in errors %}
+                <li>{{ form[field_name].label.text }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+
     <h1>Let's get Started!</h1>
     <h2>1. Locate your Ballot </h2>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
 
-        <!-- Street Address -->
         <div class="form-group">
-            {{ form.street_address.label(class="form-label") }}
-            {{ form.street_address(class="form-control") }}
+            {{ form.full_address.label(class="form-label") }}
+            {{ form.full_address(id="full_address", class="form-control") }}
         </div>
 
-        <!-- City -->
-        <div class="form-group">
-            {{ form.city.label(class="form-label") }}
-            {{ form.city(class="form-control") }}
+        <div class="form-group" style="display: none">
+            {{ form.street_address(id="street_address", class="form-control") }}
+        </div>
+        <div class="form-group" style="display: none">
+            {{ form.city(id="city", class="form-control") }}
+        </div>
+        <div class="form-group" style="display: none">
+            {{ form.state(id="state", class="form-control") }}
+        </div>
+        <div class="form-group" style="display: none">
+            {{ form.address_zip_code(id="address_zip_code", class="form-control") }}
         </div>
 
-        <!-- State -->
-        <div class="form-group">
-            {{ form.state.label(class="form-label") }}
-            {{ form.state(class="form-control") }}
-        </div>
-
-        <!-- ZIP Code for Address -->
-        <div class="form-group">
-            {{ form.address_zip_code.label(class="form-label") }}
-            {{ form.address_zip_code(class="form-control") }}
-        </div>
 
         <h2>2. A Few Intake Questions... </h2>
 
@@ -170,17 +192,29 @@ fieldset {
         <!-- Likert Scale Questions -->
         {% set likert_questions = ['housing', 'economy', 'environment', 'immigration', 'income_inequality',
         'transportation', 'education', 'healthcare', 'public_safety', 'taxation'] %}
+
         {% for question in likert_questions %}
-            <fieldset class="form-group" {% if loop.index > 4 %}style="display: none;"{% endif %}>
-                <legend>{{ form[question].label }}</legend>
-                <div class="form-check form-check-inline">
-                    {% for subfield in form[question] %}
-                    <label class="likert-label">
-                        {{ subfield }}
-                    </label>
-                    {% endfor %}
-                </div>
-            </fieldset>
+            <div class="btn-group" data-toggle="buttons">
+                <fieldset class="form-group" {% if loop.index > 4 %}style="display: none;"{% endif %}>
+                    <legend>{{ form[question].label.text }}</legend>
+
+                    <div class="form-check form-check-inline">
+                        {% for subfield in form[question] %}
+                            <label class="likert-label btn btn-primary">
+
+                            {% if loop.index == loop.length %}
+                                {{ subfield.label.text }}
+                                {{ subfield(checked=True) }}
+                            {% else %}
+                                {{ subfield.label.text }}
+                                {{ subfield() }}
+                            {% endif %}
+
+                            </label>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
         {% endfor %}
         <p>We will ask more questions as the guide requires more information...</p>
         <br>
@@ -267,6 +301,56 @@ fieldset {
                     $("#selectedLanguage").val(selectedLangEnglishName);
                 });
             });
+
+            function initAutocomplete() {
+                var input = document.getElementById('full_address');
+                var autocomplete = new google.maps.places.Autocomplete(input, {
+                    componentRestrictions: {country: 'US'},
+                    types: ['address']  // Optional: restricts the results to address entries only
+                });
+
+                autocomplete.addListener('place_changed', function() {
+                    var place = autocomplete.getPlace();
+                    var addressComponents = place.address_components;
+                    
+                    var street_address = '';
+                    var city = '';
+                    var state = '';
+                    var zip_code = '';
+                    
+                    for (var i = 0; i < addressComponents.length; i++) {
+                        var component = addressComponents[i];
+                        var componentType = component.types[0];
+                        
+                        switch (componentType) {
+                            case 'street_number':
+                                street_address = component.long_name + ' ';
+                                break;
+                            case 'route':
+                                street_address += component.long_name;
+                                break;
+                            case 'locality':
+                                city = component.long_name;
+                                break;
+                            case 'administrative_area_level_1':
+                                state = component.short_name;
+                                break;
+                            case 'postal_code':
+                                zip_code = component.long_name;
+                                break;
+                        }
+                    }
+
+                    // Populate the individual fields
+                    document.getElementById('street_address').value = street_address;
+                    document.getElementById('city').value = city;
+                    document.getElementById('state').value = state;
+                    document.getElementById('address_zip_code').value = zip_code;
+                });
+            }
+
+            google.maps.event.addDomListener(window, 'load', initAutocomplete);
+
         </script>
     </body>
 
