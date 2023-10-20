@@ -81,7 +81,23 @@
                                     <div>
                                         <button type="button" class="btn btn-secondary mr-2" id="learnMoreButton">Learn More</button>
                                         <!-- Modified the Next button to be a submit button for the form -->
-                                        <button type="submit" class="btn btn-success">Save this Choice</button>
+                                        <div class="btn-group">
+                                            <!-- This is the main button with the default action -->
+                                            <button type="submit" class="btn btn-success">Save this Candidate</button>
+                                            
+                                            <!-- This is the toggle for the dropdown menu -->
+                                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            
+                                            <!-- This is the dropdown menu -->
+                                            <div class="dropdown-menu">
+                                                <!-- Loop through the all_candidates array to create a dropdown item for each candidate -->
+                                                {% for candidate in all_candidates %}
+                                                    <a class="dropdown-item" href="#">{{ candidate }}</a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -104,7 +120,7 @@
 
     <!-- Bootstrap JS (optional, for things like dropdowns) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
@@ -139,7 +155,7 @@
 
             // TODO: only do this if there isn't already a chat going on
             var textarea = document.getElementById('userinput');
-            textarea.value = "I don't think this is the right choice for me. Can I ask you some follow up questions?";
+            textarea.value = "I'd love to briefly learn more about your recommendations";
             setTimeout(function() { formsubmitted(), 4000}) // this is a hack since this method is implemented in chat.html
             
         });

@@ -201,6 +201,10 @@ def pdf():
     sorted_races = sorted(races(), key=lambda x: x not in choices)
     return render_template('pdf.html', races=sorted_races, choices=choices)
 
+@app.route('/done', methods=['GET'])
+def done():
+    return render_template('done.html')
+
 
 def score_candidates_for_mayor(candidate_summaries, voter_info_json, voter_info_hash):
     voter_info_dir = Path(f"./data/{voter_info_hash}/oakland_mayor")
@@ -426,13 +430,15 @@ def race(race_name):
         "reason": "Jane Smith cares about children's ability to study remotely, which aligns with your values."
     }
 
+    all_candidates = ballot_data[decoded_race_name]
     return render_template('race.html', races=races(),
                            recommended_candidate=recommended_candidate_data,
                            current_race=decoded_race_name,
                            ballot_data=races,
                            race_description=race_description,
                            quote=quote,
-                           voter_info_json=voter_info_json
+                           voter_info_json=voter_info_json,
+                           all_candidates = all_candidates
                            )
 
 @app.route('/race/', defaults={'race_name': None}, methods=['POST'])
