@@ -5,7 +5,6 @@ from wtforms.validators import DataRequired, Length, Regexp
 from constants import STATE_CHOICES, QUESTION_TEXT, LIKERT_CHOICES
 from models import VoterInfo
 
-
 class IntakeForm(FlaskForm):
     # New fields for address
     street_address = StringField('Street Address', validators=[DataRequired(), Length(max=100)])

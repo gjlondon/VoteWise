@@ -126,6 +126,14 @@ def index():
         print("in form")
         return redirect(url_for('race'))
         return jsonify(form_data)
+    else:
+        # Setting default values when the form is first loaded (not submitted)
+        form.street_address.data = '9777 Golf Links Rd'
+        form.city.data = 'Oakland'
+        form.state.data = 'CA'
+        form.address_zip_code.data = '94605'
+        form.full_address.data = '9777 Golf Links Rd, Oakland, CA 94605'
+
     return render_template('intake_form.html', form=form, google_api_key = env.str('GOOGLE_MAPS_API_KEY'))
 
 
