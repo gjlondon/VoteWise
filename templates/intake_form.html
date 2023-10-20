@@ -5,9 +5,12 @@
     <title>VoteWise - Voter Profile</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/static/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&family=Source+Sans+3:wght@300;600;700&display=swap" rel="stylesheet">
     <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     background-color: #eef2f7;
     margin: 0;
     padding: 0;
@@ -22,22 +25,32 @@ body {
 }
 
 h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
     font-size: 32px;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
+    color: #0d6efd;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 1rem;
     color: #333;
 }
 
 .form-label, legend {
-    font-weight: 600;
+    font-weight: 700;
     display: block;
-    margin-bottom: 10px;
-    font-size: 1.5rem;
+    margin-bottom: .5rem;
+    font-size: 1rem;
     color: #666;
 }
 
 .form-label {
-    font-weight: 500;
-    font-size: 1.2rem;
+    font-weight: 700;
+    font-size: 1rem;
 }
 
 .form-check-label {
@@ -55,22 +68,24 @@ fieldset {
 }
 
 .btn-primary {
-    background-color: #7789d9; /* muted primary blue */
+    background-color: #0d6efd; /* primary blue */
     border: none;
-    padding: 10px 25px;
+    padding: 8px 12px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, transform 0.3s;
+    font-weight:600;
 }
 
 .btn-primary:hover {
-    background-color: #6778c4; /* muted darker blue on hover */
+    background-color: #0b4db1; /* darker blue on hover */
     transform: translateY(-2px);
 }
 
-/* Updated Likert scale gradient styles with more pronounced text shadow */
+/* Removed color gradient */
 .likert-label {
     display: inline-block;
+    background-color: #3d8bfd;
     padding: 6px 12px;
     border-radius: 6px;
     transition: background-color 0.3s, box-shadow 0.3s;
@@ -78,14 +93,9 @@ fieldset {
     cursor: pointer;
     user-select: none;
     color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    font-size: 1rem;
+    font-weight: 600;
 }
-
-.likert-label:nth-child(1) { background-color: #c3d1f0; } /* lightest blue */
-.likert-label:nth-child(2) { background-color: #a8b7e7; }
-.likert-label:nth-child(3) { background-color: #8da0de; }
-.likert-label:nth-child(4) { background-color: #7789d9; } /* muted primary blue */
-.likert-label:nth-child(5) { background-color: #6879c4; } /* muted darker blue */
 
 .likert-label:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -104,12 +114,16 @@ fieldset {
                 margin: 5px 0;
             }
 
+.likert-label:checked {
+    background-color: #333; /* Dark gray */
+    color: #fff; /* White text */
+}
     </style>
 </head>
 <body>
 <div class="container mt-5">
     <h1>Let's get Started!</h1>
-    <h2> Locate your Ballot </h2>
+    <h2>1. Locate your Ballot </h2>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
 
@@ -137,7 +151,7 @@ fieldset {
             {{ form.address_zip_code(class="form-control") }}
         </div>
 
-        <h3> A Few Intake Questions... </h3>
+        <h2>2. A Few Intake Questions... </h2>
 
         <!-- Party Affiliation -->
         <div class="form-group">
@@ -161,24 +175,22 @@ fieldset {
                 <legend>{{ form[question].label }}</legend>
                 <div class="form-check form-check-inline">
                     {% for subfield in form[question] %}
-                    <label class="form-check-label likert-label">
-                        {% if loop.index == loop.length %}
-                        {{ subfield(checked=True) }} {{ subfield.label }}
-                        {% else %}
-                        {{ subfield }} {{ subfield.label }}
-                        {% endif %}
+                    <label class="likert-label">
+                        {{ subfield }}
                     </label>
                     {% endfor %}
                 </div>
             </fieldset>
         {% endfor %}
         <p>We will ask more questions as the guide requires more information...</p>
+        <br>
 
+        <h2>3. Select your language</h2>
 
-
+        
         <input type="hidden" name="selected_language" id="selectedLanguage" value="English">
         <div class="dropdown">
-            <legend><label>Select Language</label></legend>
+            <legend><label hidden>Select Language</label></legend>
             <br>
             <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 English
@@ -195,12 +207,11 @@ fieldset {
         <br>
         <!-- checkbox to accept data usage terms -->
         <div class="form-group">
-            <legend><label>Data Usage & Privacy</label></legend>
-            <br>
+            <legend><h2>Data Usage & Privacy</h2></legend>
             <p>We use your inputs to make personalized
                 voting recommendations. We pass your inputs to AI models to make the best recommendations, and those models
                 will do limited processing of your data. But we will never resell your data or share it for any other purpose. Please see our <a href="privacy_policy.html" target="_blank">Privacy Policy</a> for more details.</p>
-            <label class="checkbox-inline">
+            <label class="checkbox-inline" style="font-weight: 600">
               <input type="checkbox" name="accept" value="accept">
                 Accept Privacy Policy
             </label>
