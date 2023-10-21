@@ -191,8 +191,13 @@ def pdf():
         if phone_number:
             phone_number = sms.normalize_number(phone_number)
             # Call your desired Python function here
-            sms.send(phone_number, text="test from josh")
+            msg1 = "Hello There! I'm happy I could help you figure out who to vote for and which issues to support by understanding who you are and what matters most to you. Because you care about environmental protection and job creation, make sure to vote on November 5th. "
+            msg1_video = "http://votewise.radiantmachines.com/static/msg1.mp4"
+            sms.send(phone_number, text=msg1, media=msg1_video)
             sms.save_to_json(phone_number, session, ["REMIND"])
+            msg2 = "Hi There, Don’t forget to Vote for VoteWise - the world’s first AI-powered personalized voter guide that is helping to ensure everyone votes and every vote counts. Help us use AI to deepen democracy and build a better world. Go here to vote for VoteWise. "
+            msg2_video = "http://votewise.radiantmachines.com/static/msg2.mp4"
+            sms.send(phone_number, text=msg2, media=msg2_video )
             return jsonify(success=True)
         else:
             return jsonify(success=False, message="Phone number not provided"), 400
