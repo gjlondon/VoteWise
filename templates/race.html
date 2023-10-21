@@ -165,7 +165,7 @@ strong{
                                             <div class="dropdown-menu">
                                                 <!-- Loop through the all_candidates array to create a dropdown item for each candidate -->
                                                 {% for candidate in all_candidates %}
-                                                    <a class="dropdown-item" href="#">{{ candidate }}</a>
+                                                    <a class="dropdown-item" href="/confirm?candidate={{candidate}}&race={{quote(quote(current_race))}}">{{ candidate }}</a>
                                                 {% endfor %}
                                             </div>
                                         </div>
