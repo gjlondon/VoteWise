@@ -182,6 +182,8 @@ MAYOR_SCORING_PROMPT_TEMPLATE = """
     
     For each score, give a detailed justification for why you gave that score. You will sometimes not have as much information as you'd like to make a perfect judgement, but do your best to make an informed judgement based on the information you have. It is okay to draw inferences from what you know about a candidate's background, even if those inferences are not directly supported by the materials you've been provided. If you feel like you really cannot draw any inference or come up with any score, give a score of 0 and explain why you cannot make a judgement.
     
+    The reasoning you provide in each justification should include at least 5 different independent subpoints, and should generally be at least 5 complete sentences long.
+    
     Key issues:
     ```
     {oakland_mayor_issues}
