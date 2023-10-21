@@ -304,5 +304,7 @@ Respond to this prompt in the {language} language.
 
 The output is going to be directly parsed and loaded into python via a `json.loads` call, so make sure it is exactly adheres to the json syntactic validity requirements laid out in RFC 8259, "The JavaScript Object Notation (JSON) Data Interchange Format," published by the Internet Engineering Task Force (IETF).
 
+Do not mention the values of any of the scores you gave to candidates in your response. E.g. instead of "Thao is a Democrat like the voter and endorsed by groups they would support (scores of 100 and 90)" you should say "Thao is a Democrat like the voter and endorsed by groups they would support." 
+
 Do not provide any preamble or introduction. Just immediately start generating JSON. the very first character of your 
 response should be {{ and the very last character should be }}."""
