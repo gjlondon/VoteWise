@@ -217,11 +217,19 @@ strong{
         // Register event listener for the Learn More button
         learnMoreBtn.addEventListener('click', function() {
             console.log('Learn More button clicked');
-            var chatContainer = document.getElementById('chatContainer');
+            const chatContainer = document.getElementById('chatContainer');
             if (chatContainer.style.maxHeight === "0px" || !chatContainer.style.maxHeight) {
                 chatContainer.style.maxHeight = "1000px";  // You might need to adjust this value to suit the content size.
             } else {
                 chatContainer.style.maxHeight = "0px";
+            }
+            // update the css on the avatar-container class
+            const avatarContainers = document.getElementsByClassName('avatar-container');
+            const avatarContainer = avatarContainers[0];
+            if (avatarContainer.style.display === "none" || !avatarContainer.style.display) {
+                avatarContainer.style.display = "block";
+            } else {
+                avatarContainer.style.display = "none";
             }
             
         });
