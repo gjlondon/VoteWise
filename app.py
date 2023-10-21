@@ -197,7 +197,7 @@ def pdf():
             sms.save_to_json(phone_number, session, ["REMIND"])
             msg2 = "Hi There, Don’t forget to Vote for VoteWise - the world’s first AI-powered personalized voter guide that is helping to ensure everyone votes and every vote counts. Help us use AI to deepen democracy and build a better world. Go here to vote for VoteWise. "
             msg2_video = "http://votewise.radiantmachines.com/static/msg2.mp4"
-            sms.send(phone_number, text=msg2, media=msg2_video )
+            #sms.send(phone_number, text=msg2, media=msg2_video )
             return jsonify(success=True)
         else:
             return jsonify(success=False, message="Phone number not provided"), 400

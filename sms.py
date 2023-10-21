@@ -67,7 +67,7 @@ def process_messages(send_message_func):
         pending_messages = user_values.get("pending_messages", [])
         # Process each pending message for the user.
         for message in pending_messages[:]:
-            send_message_func(user_values, message)
+            send_message_func(number, message)
             sent_messages.append(message)
             pending_messages.remove(message)
 
@@ -81,8 +81,13 @@ def process_messages(send_message_func):
 
 
 # Example usage:
-def example_send_message(user_data, message):
-    print(f"Sending message to {user_data}: {message}")
+def example_send_message(number, message):
+    time.sleep(10)
+    print(f"Sending message to {number}")
+    msg2 = "Hi There, Don’t forget to Vote for VoteWise - the world’s first AI-powered personalized voter guide that is helping to ensure everyone votes and every vote counts. Help us use AI to deepen democracy and build a better world. Go here to vote for VoteWise. "
+    msg2_video = "http://votewise.radiantmachines.com/static/msg2.mp4"
+    send(number, text=msg2, media=msg2_video)
+
 
 
 def normalize_number(us_number):
@@ -108,6 +113,7 @@ def send(number, text, media=None):
         media_url=media #"https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Arnold_Schwarzenegger_by_Gage_Skidmore_4.jpg/440px-Arnold_Schwarzenegger_by_Gage_Skidmore_4.jpg"  # Replace with the URL to your media
     )
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Send SMS message')
     # Assuming you might want to parse some arguments here
@@ -115,4 +121,4 @@ if __name__ == "__main__":
 
     while True:  # This will create an infinite loop
         process_messages(example_send_message)
-        time.sleep(1)  # This will pause the loop for 1 second
+        time.sleep(45)  # This will pause the loop for 1 second
