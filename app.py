@@ -556,7 +556,9 @@ def chat(race_name, recommendation):
                     Always reply in {language}.
                     
                     Connect any answer you give back to the overall goal of helping the voter decide how they should vote in this election, in order to select the
-                    candidate who best represents their priorities, interests, and values (based on the voter summary you've been provided).
+                    candidate who best represents their priorities, interests, and values (based on the voter summary you've been provided). Your response should
+                    try to volunteer information that will be helpful in connecting the voter's question or statement to relevant information about the candidates
+                    or the race (only include information about the candidates that is relevant to the voter's question or statement).
                     
                 """
     prompt += """
