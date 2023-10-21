@@ -1,62 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <title>Thank You</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoteWise - AI Powered Voting Recommendations</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;800&family=Source+Sans+3:wght@300;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            background-color: #f9f9f9;
-        }
-        .container {
-            margin-top: 10%;
-            text-align: center;
-        }
-        .btn {
-            width: 200px;
-            margin-top: 20px;
-        }
-        .form-group {
-            margin-top: 20px;
-        }
+      .hero-section {
+        height: 100vh;
+        background-image: url('static/flagbanner.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: #333;
+        text-align: left;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    body {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    background-color: #eef2f7;
+    margin: 0;
+    padding: 0;
+    }
+
+    h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: #333;
+    }
+    
+    h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+    }
+
+    .lead {
+    font-size: 2rem;
+    font-weight: 500;    
+    }
+
+    .btn-primary {
+    background-color: #9ec5fe; /* primary blue */
+    border-width: 3px;
+    border-color: #000;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 #000;
+    transition: background-color 0.3s, box-shadow 0.3s transform 0.3s;
+    font-weight:600;
+    color: #000;
+    text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+    border-color: #000;
+    box-shadow: 0 0 0;
+    transform: translateY(3px);
+    color: #fff;
+    }
+
+    strong{
+    font-size: 1.25rem;
+    text-decoration: underline;
+    font-weight: 600;
+    color: #000;
+    }
+
+    a{
+    text-decoration: none;
+    color: inherit;
+    }
+
+    html{
+    scroll-behavior: smooth;
+    }
+
+    .center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    
+    section {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    }
+    
     </style>
 </head>
-
 <body>
 
-    <div class="container">
-        <h1>Thank you for participating in the democratic process!</h1>
-
-        <!-- Download PDF Button -->
-        <div>
-            <a href="#" class="btn btn-primary btn-lg">Download PDF</a>
+    <section class="hero-section">
+        <div class="container">
+            <h1 style="text-align: center">Thank you for participating in the democratic process!</h1>
+            <div style="text-align: center">
+                <!-- Download PDF Button -->
+                <div class="mb-4">
+                    <a href="#" id="savePDF" class="btn btn-primary btn-lg">Download PDF</a>
+                </div>
+    
+                <!-- Phone Number Input and Button -->
+                <div class="form-row justify-content-center">
+                    <!-- Text Input -->
+                    <div class="form-group col-md-6">
+                        <label for="phone-number" class="sr-only">Phone Number</label>
+                        <input type="tel" class="form-control form-control-lg" id="phone-number" placeholder="Enter your phone number">
+                    </div>
+                    <!-- Button -->
+                    <div class="form-group col-auto">
+                        <button class="btn btn-secondary btn-lg">Remind Me to Vote</button>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
+    
 
-        <!-- Phone Number Input -->
-        <div class="form-group">
-            <label for="phone-number" class="sr-only">Phone Number</label>
-            <input type="tel" class="form-control form-control-lg" id="phone-number" placeholder="Enter your phone number">
-        </div>
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Font Awesome for icons (if you need) -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Select the phone number input and the button
+    const phoneNumberInput = document.getElementById("phone-number");
+    const remindButton = document.querySelector(".btn-secondary");
 
-        <!-- Reminder Button -->
-        <div>
-            <button class="btn btn-secondary btn-lg">Remind Me to Vote</button>
-        </div>
+    // Initially disable the button
+    remindButton.disabled = true;
 
-    </div>
+    // Function to validate the phone number
+    function validatePhoneNumber(number) {
+        const regex = /^(?:\(\d{3}\)|\d{3}-)\d{3}-\d{4}$/;
+        return regex.test(number);
+    }
 
-    <!-- Optional JavaScript; choose one of the two! -->
+    // Add event listener to phone number input
+    phoneNumberInput.addEventListener("input", function() {
+        remindButton.disabled = !validatePhoneNumber(phoneNumberInput.value);
+    });
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    // Add event listener to the button
+    remindButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        submitPhone();
+    });
+});
 
+
+        function submitPhone() {
+        var phoneNumber = $('#phone-number').val();
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/pdf',
+            data: { phone_number: phoneNumber },
+            contentType: 'application/x-www-form-urlencoded',
+            success: function(response) {
+                if (response.success) {
+                    $('#successModal').modal('show');
+                } else {
+                    $('#errorModal').modal('show');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $('#errorModal').modal('show');
+
+            },
+            complete: function() {
+                // Hide loading indicator
+                $('body').css('cursor', 'default');
+
+            }
+        });
+    }
+
+    document.getElementById('savePDF').addEventListener('click', function(){
+        var opt = {
+            margin: 10,
+            filename: 'choices.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(document.body).save();
+    });
+</script>
 </body>
-
 </html>
+
