@@ -127,6 +127,7 @@ def get_full_url(relative_path):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Make Vid')
     msg  = "Hello There! I'm happy I could help you figure out who to vote for and which issues to support by understanding who you are and what matters most to you. Because you care about environmental protection and job creation, make sure to vote on November 5th. "
+    msg = "Hi There, Don't forget to Vote for VoteWise - the world's first AI-powered personalized voter guide that is helping to ensure everyone votes and every vote counts. Help us use AI to deepen democracy and build a better world. Go here to vote for VoteWise. "
     talk = sent_tokenize(msg)
     video_from_text(talk, "static/votewise.jpg", "TM:ky7m707xwp8y")
     #make_audio(msg, "TM:ky7m707xwp8y" )
