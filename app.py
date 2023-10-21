@@ -28,13 +28,8 @@ env = Env()
 # Read .env into os.environ
 env.read_env()
 
-# print(os.getenv('OPENAI_API_KEY'))
-# print(os.getenv('OPENAI_KEY'))
-
-# os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_KEY')
-# import ipdb; ipdb.set_trace()
 anthropic = Anthropic()
-llm = ChatOpenAI(model_name='gpt-3.5-turbo')
+llm = ChatOpenAI(model_name='gpt-3.5-turbo-16k')
 memory = ConversationSummaryBufferMemory(llm=llm, max_token_limit=2000)
 new_memory_by_race = {}
 app = Flask(__name__)
@@ -538,6 +533,11 @@ def chat(race_name, recommendation):
 
     language = json.loads(voter_info).get('selected_language', LANGUAGE)
 
+    with open(os.path.join(app.root_path, 'data', 'big_candidate_summaries.json'), 'r') as f:
+        candidate_summaries = json.load(f)
+
+    escaped_candidate_summaries = json.dumps(candidate_summaries).replace('{', '{{').replace('}', '}}')
+
     prompt = f"""
                     You are a helpful voting assistant. You made the following recommendation:
                     {recommendation['name']}
@@ -549,8 +549,15 @@ def chat(race_name, recommendation):
                     
                     Here's info about the voter:
                     {escaped_voter_info}
+                    
+                    And here is information about the candidates:
+                    {escaped_candidate_summaries}
 
                     Always reply in {language}.
+                    
+                    Connect any answer you give back to the overall goal of helping the voter decide how they should vote in this election, in order to select the
+                    candidate who best represents their priorities, interests, and values (based on the voter summary you've been provided).
+                    
                 """
     prompt += """
 
@@ -561,8 +568,6 @@ def chat(race_name, recommendation):
     """
 
     print(prompt)
-    # TODO: figure out how to put voter info back into the prompt
-    # also ideally candidate summaries
     local_prompt = PromptTemplate(input_variables=["chat_history", "input"], template=prompt)
 
     try:
