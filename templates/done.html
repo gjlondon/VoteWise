@@ -152,9 +152,29 @@
 
     // Function to validate the phone number
     function validatePhoneNumber(number) {
-        const regex = /^(?:\(\d{3}\)|\d{3}-)\d{3}-\d{4}$/;
-        return regex.test(number);
+    // Simpler regex to check if the entered value is valid (10 or 11 digits)
+    const regex = /^(1-?)?\d{3}-?\d{3}-?\d{4}$/;
+    return regex.test(number);
+}
+
+    function formatPhoneNumber() {
+        let value = phoneNumberInput.value;
+        value = value.replace(/\D/g, ''); // Remove non-digits
+        if (value.length > 10) {
+            value = value.slice(0, 1) + '-' + value.slice(1, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11);
+        } else if (value.length > 6) {
+            value = value.slice(0, 3) + '-' + value.slice(3, 6) + '-' + value.slice(6, 10);
+        } else if (value.length > 3) {
+            value = value.slice(0, 3) + '-' + value.slice(3, 6);
+        }
+        phoneNumberInput.value = value;
     }
+
+    // Modify the event listener for the phone number input
+    phoneNumberInput.addEventListener("input", function() {
+        formatPhoneNumber();
+        remindButton.disabled = !validatePhoneNumber(phoneNumberInput.value);
+    });
 
     // Add event listener to phone number input
     phoneNumberInput.addEventListener("input", function() {
