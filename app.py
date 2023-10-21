@@ -203,7 +203,9 @@ def pdf():
 
 @app.route('/done', methods=['GET'])
 def done():
-    return render_template('done.html')
+    choices = session.get('choices', {})
+    sorted_races = sorted(races(), key=lambda x: x not in choices)
+    return render_template('done.html', races=sorted_races, choices=choices)
 
 
 def score_candidates_for_mayor(candidate_summaries, voter_info_json, voter_info_hash):

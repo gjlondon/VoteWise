@@ -131,7 +131,21 @@
                 </div>
             </div>
         </div>
+        <div id="pdfContent" style="display: none;">
+            <h2>User Selections</h2>
+            <ul class="list-group">
+                {% for race in races %}
+                    <li class="list-group-item">
+                        {{ race }}:
+                        <strong>{{ choices.get(race, "no selection") }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- Your hidden content for the PDF goes here -->
+        </div>
     </section>
+
+
     
 
 <!-- Bootstrap JS, Popper.js, and jQuery -->
@@ -226,7 +240,11 @@
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf().set(opt).from(document.body).save();
+        const pdfTarget = document.getElementById('pdfContent');
+        var clonedElement = pdfTarget.cloneNode(true);
+        clonedElement.style.display = "block"
+        html2pdf().set(opt).from(clonedElement).save();
+        clonedElement.remove();
     });
 </script>
 </body>
