@@ -627,5 +627,10 @@ def handle_issue_chat():
         return jsonify({"message": error_message, "response": False})
 
 
+@app.route('/privacy_policy.html')
+def privacy_policy():
+    return render_template('privacy_policy.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
