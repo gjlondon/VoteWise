@@ -28,6 +28,11 @@ env = Env()
 # Read .env into os.environ
 env.read_env()
 
+# print(os.getenv('OPENAI_API_KEY'))
+# print(os.getenv('OPENAI_KEY'))
+
+# os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_KEY')
+# import ipdb; ipdb.set_trace()
 anthropic = Anthropic()
 llm = ChatOpenAI(model_name='gpt-3.5-turbo')
 memory = ConversationSummaryBufferMemory(llm=llm, max_token_limit=2000)

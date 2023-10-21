@@ -68,19 +68,28 @@ fieldset {
 }
 
 .btn-primary {
-    background-color: #0d6efd; /* primary blue */
-    border: none;
+    background-color: #9ec5fe; /* primary blue */
+    border-width: 3px;
+    border-color: #000;
+    border-radius: 4px;
     padding: 8px 12px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 3px 3px 0 #000;
+    transition: background-color 0.3s, box-shadow 0.3s transform 0.3s;
     font-weight:600;
+    color: #000;
+    text-transform: uppercase;
 }
 
 .btn-primary:hover {
-    background-color: #0b4db1; /* darker blue on hover */
-    transform: translateY(-2px);
+    border-color: #000;
+    box-shadow: 0 0 0;
+    transform: translateY(3px);
     color: #fff;
+    }
+
+.checkbox-inline {
+    margin-right: 1rem;
 }
 
 /* Removed color gradient */
@@ -222,7 +231,7 @@ fieldset {
         <div class="form-group">
             {{ form.political_issues.label(class="form-label") }}
             {% for subfield in form.political_issues %}
-            <label class="checkbox-inline">{{ subfield }} {{ subfield.label.text }}</label>
+            <label class="checkbox-inline" style="margin-right: 1rem;">{{ subfield }} {{ subfield.label.text }}</label>
             {% endfor %}
         </div>
 
