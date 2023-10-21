@@ -1,8 +1,4 @@
 {
-    "United States Senator": [
-        "Alex Padilla, Democratic",
-        "Mark P. Meuser, Republican"
-    ],
     "Mayor; City of Oakland": [
         "Loren Manuel Taylor",
         "Sheng Thao",
@@ -14,6 +10,10 @@
         "John Reimann",
         "Peter Y. Liu",
         "Tyron C. Jordan"
+    ],
+    "United States Senator": [
+        "Alex Padilla, Democratic",
+        "Mark P. Meuser, Republican"
     ],
     "Proposition 29 Kidney Dialysis Clinics": "Requires physician, nurse practitioner, or physician assistanton site during treatment. Requires clinics to: disclosephysicians' ownership interests; report infection data.Fiscal Impact: Increased state and local government costslikely in the tens of millions of dollars annually.",
     "Governor": [
