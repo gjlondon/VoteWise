@@ -3,6 +3,12 @@ import uuid
 import subprocess
 import glob
 import urllib.parse
+import argparse
+import os
+import nltk
+from nltk.tokenize import sent_tokenize
+import time
+
 
 from pydub import AudioSegment
 import fakeyou
@@ -29,7 +35,7 @@ def make_audio(msg, voice):
     return filename
 
 
-def concatenate_wav_files(file_list, output_file, max_length=30 * 1000):  # max_length in milliseconds
+def concatenate_wav_files(file_list, output_file, max_length=40 * 1000):  # max_length in milliseconds
     # Empty audio segment
     combined = AudioSegment.empty()
 
@@ -61,9 +67,11 @@ def make_video(audio, image):
     # Create the directory
     dir_path.mkdir(parents=True, exist_ok=True)
 
+    current_directory = os.getcwd()
+
     command = [
         "docker", "run", "--gpus", "all", "--rm",
-        "-v", "/home/paperspace/code/sad:/host_dir", "wawa9000/sadtalker",
+        "-v", f"{current_directory}:/host_dir", "wawa9000/sadtalker",
         "--driven_audio", f"/host_dir/{audio}",
         "--source_image", f"/host_dir/{image}",
         "--expression_scale", "1.0",
@@ -90,6 +98,7 @@ def video_from_text(msg_list, image, voice):
 
     for msg in msg_list:
         wav_paths.append(make_audio(msg, voice))
+        time.sleep(1)
 
     voice_name = uuid.uuid4()
     filename = Path(f'./audio/{voice_name}.wav')
@@ -107,13 +116,6 @@ def get_full_url(relative_path):
     return base_url + encoded_path
 
 
-long = [
-    "Ensign, On Stardate Saturday, you bypassed your training. "
-    "Remember, stagnation halts our journey. Engage in daily exercises. Our ship's efficiency relies on your utmost fitness. ",
-    "Pursue your fencing and sprints with diligence.",
-    "This isn't just about the Federation, but transcending your own limits. On the holodeck, show that holographic iron your resolve. Every action defines your Starfleet legacy. Engage and persevere!",
-    "Captain Picard."
-]
 
 # arnold
 "TM:gx7a6exf3bda"
@@ -121,3 +123,12 @@ long = [
 "TM:zxfsed6gd89j"
 # SJ
 "TM:ky7m707xwp8y"
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Make Vid')
+    msg  = "Hello There! I'm happy I could help you figure out who to vote for and which issues to support by understanding who you are and what matters most to you. Because you care about environmental protection and job creation, make sure to vote on November 5th. "
+    talk = sent_tokenize(msg)
+    video_from_text(talk, "static/votewise.jpg", "TM:ky7m707xwp8y")
+    #make_audio(msg, "TM:ky7m707xwp8y" )
+    #make_video("audio/d7de53ff-1837-4f7e-8855-0a9cc1685bc5.wav", "static/votewise.jpg")
+

@@ -60,3 +60,4 @@ fastapi[all]
 twilio
 uvicorn
 pydub
+nltk
