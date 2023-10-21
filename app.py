@@ -406,7 +406,7 @@ def hash_json_object(json_object):
 def race(race_name):
     decoded_race_name = races()[0] if race_name is None else unquote(race_name)
     race_description = ballot_descriptions[
-        decoded_race_name] if decoded_race_name in ballot_descriptions else "This race is full of intrigue and mystery. We don't know much about it yet."
+        decoded_race_name] if decoded_race_name in ballot_descriptions else "A description of this race is not yet available in this demo version of VoteWise."
 
     voter_info_json = session.get('voter_info')
     voter_info_hash = hash_json_object(voter_info_json)
@@ -455,7 +455,7 @@ def race_recommendation(race_name):
 
     decoded_race_name = races()[0] if race_name is None else unquote(race_name)
     race_description = ballot_descriptions[
-        decoded_race_name] if decoded_race_name in ballot_descriptions else "This race is full of intrigue and mystery. We don't know much about it yet."
+        decoded_race_name] if decoded_race_name in ballot_descriptions else "A description of this race is not yet available in this demo version of VoteWise."
     voter_info_json = session.get('voter_info')
 
     # read the demo field from env
@@ -483,18 +483,37 @@ def race_recommendation(race_name):
             "name": extract_key_from_json(recommendation, "recommendation"),
             "reason": extract_key_from_json(recommendation, "justification", human_readable=True)
         }
-    else:
+    elif "senator" in race_name.lower():
         recommended_candidate_data = {
             "name": "Alex Padilla, Democratic",
             "reason": """
-            <ul>Alex Padilla is the candidate for Senator officially nominated by the Democratic party. That means
-                      that he ran in a primary race in the spring and was the preferred Democratic voter for the majority
-                      of people who voted in the primary.
-                      
-                      <li> He shares many of your views on affordable housing and criminal justice</li>
-                      <li> He has a long track record of public service</li>
-                      <li> He is endorsed by nearly every state and national Democratic elected leader</li>
-                      <li> He has no notable scandals in his public or private career.</li>
+         <ul>
+    <li><strong>Democratic Primary Winner:</strong> Padilla was the chosen candidate in the Democratic primary, indicating that he resonated with a significant number of Democratic voters in the state.</li>
+
+    <li><strong>Affordable Housing and Criminal Justice:</strong> Padilla has shown a commitment to affordable housing and criminal justice reform. For instance, he supported the "Fighting Homelessness Through Services and Housing Act", which aligns with the interests of many California Democrats who are concerned about the state's housing crisis.</li>
+
+    <li><strong>Public Service Experience:</strong> Padilla has a long history of public service, from the Los Angeles City Council to the State Senate, and then as California's Secretary of State. This experience gives him a deep understanding of the issues facing Californians and the legislative process.</li>
+
+    <li><strong>Democratic Leader Endorsements:</strong> While endorsements from Democratic leaders might seem partisan, they also indicate that Padilla has the respect and support of his peers, which can be crucial in getting legislation passed.</li>
+
+    <li><strong>Clean Record:</strong> Padilla has maintained a clean record throughout his public and private career, which speaks to his integrity and commitment to ethical conduct.</li>
+
+    <li><strong>Climate Action and Renewable Energy:</strong> As Chair of the State Senate Committee on Energy, Utilities, and Communications, Padilla was instrumental in developing California's renewable energy and climate policies. This aligns with the environmental concerns of many California Democrats.</li>
+
+    <li><strong>Voting Rights Advocacy:</strong> As California's Secretary of State, Padilla worked to make elections more accessible and inclusive, and protected the integrity of voting systems. This commitment to democratic processes is likely to resonate with Democrats who value voting rights.</li>
+
+    <li><strong>Immigration Reform:</strong> Padilla, the son of Mexican immigrants, has shown a commitment to immigration reform. His first bill in the Senate sought to create a pathway to citizenship for undocumented immigrants who served as essential workers during the COVID-19 pandemic. This stance aligns with the views of many California Democrats who support comprehensive immigration reform.</li>
+</ul>
+                      """
+
+        }
+    else:
+
+        recommended_candidate_data = {
+            "name": "No Recommendation Available",
+            "reason": """
+            <ul><p>This demo of VoteWise only provides recommendations for a limited selection of races.</p> <p>In future versions, we aim to provide
+            reliable recommendations for every race on your ballot.</p>
                       </ul>
                       """
 
